@@ -11,5 +11,6 @@ COPY app  /app
 RUN /app/bin/generate.sh
 ENTRYPOINT ["/app/bin/run_service.sh"]
 ENV HOME /tmp
+ENV PYTHONPATH /app/src
 USER 1001
 
