@@ -1,4 +1,4 @@
-fastapi-code-generator==0.3.4
+fastapi-code-generator==0.5.1
 fastapi~=0.111
 PyYAML~=6.0
 requests>=2.32.2, <3

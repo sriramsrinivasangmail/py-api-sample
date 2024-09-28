@@ -8,8 +8,8 @@ COPY app/requirements.txt /app/requirements.txt
 RUN pip install -r /app/requirements.txt
 
 COPY app  /app
-
-ENTRYPOINT ["/app/src/main.py"]
+RUN /app/bin/generate.sh
+ENTRYPOINT ["/app/bin/run_service.sh"]
 ENV HOME /tmp
 USER 1001
 

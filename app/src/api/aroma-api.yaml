@@ -1,0 +1,307 @@
+openapi: 3.0.3
+info:
+  title: Aroma Coffee Store API
+  description: API for managing coffee, customers, and orders at Aroma Coffee Store.
+  version: 1.0.0
+servers:
+  - url: http://localhost:20080
+    description: Local development server
+
+paths:
+  /coffees:
+    get:
+      summary: List all coffees
+      operationId: listCoffees
+      responses:
+        '200':
+          description: A list of coffees
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Coffee'
+    post:
+      summary: Add a new coffee
+      operationId: createCoffee
+      requestBody:
+        description: Coffee object that needs to be added
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Coffee'
+      responses:
+        '201':
+          description: Coffee created
+    patch:
+      summary: Update a coffee
+      operationId: updateCoffee
+      requestBody:
+        description: Coffee object with updated data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Coffee'
+      responses:
+        '200':
+          description: Coffee updated
+    delete:
+      summary: Delete a coffee by name
+      operationId: deleteCoffee
+      parameters:
+        - name: coffee_name
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Coffee deleted
+
+  /coffees/{name}:
+    get:
+      summary: Get a coffee by name
+      operationId: getCoffeeByName
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Coffee details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Coffee'
+
+  /customers:
+    get:
+      summary: List all customers
+      operationId: listCustomers
+      responses:
+        '200':
+          description: A list of customers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    post:
+      summary: Add a new customer
+      operationId: createCustomer
+      requestBody:
+        description: Customer object that needs to be added
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: Customer created
+    patch:
+      summary: Update a customer
+      operationId: updateCustomer
+      requestBody:
+        description: Customer object with updated data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: Customer updated
+    delete:
+      summary: Delete a customer by name
+      operationId: deleteCustomer
+      parameters:
+        - name: customer_name
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Customer deleted
+
+  /customers/{name}:
+    get:
+      summary: Get a customer by name
+      operationId: getCustomerByName
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Customer details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+
+  /orders:
+    get:
+      summary: List all orders
+      operationId: listOrders
+      responses:
+        '200':
+          description: A list of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+    post:
+      summary: Add a new order
+      operationId: createOrder
+      requestBody:
+        description: Order object that needs to be added
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '201':
+          description: Order created
+    patch:
+      summary: Update an order by order_id
+      operationId: updateOrder
+      parameters:
+        - name: order_id
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Order object with updated data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '200':
+          description: Order updated
+    delete:
+      summary: Delete an order by order_id
+      operationId: deleteOrder
+      parameters:
+        - name: order_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order deleted
+
+  /orders/{order_id}:
+    get:
+      summary: Get an order by order_id
+      operationId: getOrderById
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+components:
+  schemas:
+    Coffee:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Espresso"
+        description:
+          type: string
+          example: "A strong and bold coffee."
+        quantity:
+          type: number
+          format: float
+          example: 12.0
+        origin:
+          type: string
+          example: "Colombia"
+        packaging_data:
+          type: string
+          example: "Vacuum sealed"
+        price:
+          type: number
+          format: float
+          example: 9.99
+
+    Customer:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "John Doe"
+        comments:
+          type: string
+          example: "Prefers dark roast"
+        address:
+          type: string
+          example: "123 Coffee Lane"
+        city:
+          type: string
+          example: "Brewtown"
+        state:
+          type: string
+          example: "CA"
+        zip:
+          type: string
+          example: "90210"
+
+    Order:
+      type: object
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        delivery_date:
+          type: string
+          format: date
+          example: "2024-09-30"
+        customer_name:
+          type: string
+          example: "John Doe"
+        order_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Coffee'
+        sale_price:
+          type: number
+          format: float
+          example: 19.99
+        status:
+          type: string
+          enum:
+            - returned
+            - canceled
+            - delivered
+            - shipped
+            - in_progress
+            - pending
+          example: "pending"
+
