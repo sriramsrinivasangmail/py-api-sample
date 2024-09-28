@@ -7,7 +7,7 @@ import jinja2
 
 from fastapi import FastAPI
 
-from .routers import {{ routers | join(", ") }}
+from generated.routers import {{ routers | join(", ") }}
 
 app = FastAPI(
     {% if info %}
@@ -22,6 +22,10 @@ app = FastAPI(
 app.include_router({{router}}.router)
 {% endfor -%}
 
+@app.get("/")
+async def root():
+    return {"message": "Gateway of the App"}
+
 # Health check endpoint
 @app.get("/healthz")
 async def healthz():
@@ -29,7 +33,7 @@ async def healthz():
 
 
 @app.get("/readyz")
-def readyz():
+async def readyz():
     ap = os.getenv("HOME")
     if ap is None:
         raise HTTPException(status_code=500, detail="HOME is not set")

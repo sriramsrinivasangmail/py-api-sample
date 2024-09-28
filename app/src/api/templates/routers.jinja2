@@ -2,7 +2,11 @@ from __future__ import annotations
 
 from fastapi import APIRouter
 
-from ..dependencies import *
+from typing import List
+
+from generated.dependencies import *
+
+from generated.models import *
 
 router = APIRouter(
     tags=['{{tag}}']
