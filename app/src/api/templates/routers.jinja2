@@ -8,6 +8,8 @@ from generated.dependencies import *
 
 from generated.models import *
 
+from aroma_lib import {{tag}}_impl
+
 router = APIRouter(
     tags=['{{tag}}']
     )
@@ -29,17 +31,22 @@ router = APIRouter(
     {% if operation.tags%}
     , tags={{operation.tags}}
     {% endif %})
+
 def {{operation.function_name}}({{operation.snake_case_arguments}}) -> {{operation.return_type}}:
+
     {%- if operation.summary %}
     """
     {{ operation.summary }}
+
     """
     {%- endif %}
+
+
     {% if operation.return_type != 'None' %}
-    result = aroma_lib.{{operation['operationId']}}_impl()  # Call the internal function
+    result = {{tag}}_impl.{{operation.function_name}}(**locals())  # Call the internal function
     return result
     {% else %}
-    aroma_lib.{{operation['operationId']}}_impl()  # Call the internal function
+    {{tag}}_impl.{{operation.function_name}}(**locals())  # Call the internal function
     {% endif %}
     
 {% endif %}
